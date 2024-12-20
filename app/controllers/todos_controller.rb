@@ -21,7 +21,11 @@ class TodosController < ApplicationController
 
   # POST /todos or /todos.json
   def create
-
+    respond_to do |format|
+      if @todo.create(todo_params)
+        format.html { redirect_to @todo, notice: "Todo was successfully created." }
+      end
+    end
   end
 
   # PATCH/PUT /todos/1 or /todos/1.json
