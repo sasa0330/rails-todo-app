@@ -21,23 +21,16 @@ class TodosController < ApplicationController
 
   # POST /todos or /todos.json
   def create
+    @todo = Todo.new(todo_params)
+    binding.irb
     respond_to do |format|
-      # saveを使わずに、シンプルにこれでも登録はできる
-      # todo = Todo.create(todo_params)
-      # format.html { redirect_to todo, notice: "Todo was successfully created." }
-       
-      # todo_params にTodoの情報色々渡ってきてる
-      # それを元にtodoインスタンス生成
-       @todo = Todo.new(todo_params)
-       respond_to do |format|
-        if @todo.save # 生成したものを保存          
-          format.html { redirect_to @todo, notice: "Todo was successfully created." }# formatがHTMLの時はこっち返す
-          format.json { render :show, status: :created, location: @todo } # formatがjsonの時はこっち返す
-        else # 保存できなかったらこっち
-          format.html { render :new, status: :unprocessable_entity }
-          format.json { render json: @todo.errors, status: :unprocessable_entity }
-        end
-       end
+    if @todo.save # 生成したものを保存          
+      format.html { redirect_to @todo, notice: "Todo was successfully created." } # formatがHTMLの時はこっち返す
+      format.json { render :show, status: :created, location: @todo } # formatがjsonの時はこっち返す
+    else # 保存できなかったらこっち
+      format.html { render :new, status: :unprocessable_entity }
+      format.json { render json: @todo.errors, status: :unprocessable_entity }
+    end
     end
   end
 
@@ -72,6 +65,6 @@ class TodosController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def todo_params
-      params.require(:todo).permit(:title)
+      params.require(:todo).permit(:title, :nameKanji)
     end
 end
